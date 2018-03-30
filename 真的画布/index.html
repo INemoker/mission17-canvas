@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <canvas id="xxx" width= 600 height=600></canvas>
+    <script>
+        var yyy = document.getElementById('xxx')
+        var context = yyy.getContext('2d')
+
+ 
+        function drawCircle(x,y,radius){
+        context.beginPath()
+        context.arc(x,y,radius,0,Math.PI*2)
+        context.fill()
+        }
+
+        function drawLine(x1,y1,x2,y2){
+            context.beginPath()
+            context.moveTo(x1,y1)//起点
+            context.lineWidth = 3
+            context.lineTo(x2,y2)//终点
+            context.strokeStyle = 'black'
+            context.stroke()
+            context.closePath()   
+        }
+
+
+
+
+        var lastPoint ={x:undefined,y:undefined}
+        var painting = false
+        yyy.onmousedown = function(aaa){
+            painting = true
+            var x = aaa.clientX
+            var y = aaa.clientY
+            // 这都是相对于视口的位置
+            lastPoint = {'x':x,'y':y}
+            // drawCircle(x,y,3)
+        }
+        yyy.onmousemove = function(aaa){
+            if(painting){
+                var x = aaa.clientX
+                var y = aaa.clientY
+            // 这都是相对于视口的位置
+                var newPoint = {'x':x,'y':y}
+                // drawCircle(x,y,5)
+                drawLine (lastPoint.x,lastPoint.y,newPoint.x,newPoint.y)
+                lastPoint = newPoint 
+                
+            }else{
+
+            }
+        }
+        yyy.onmouseup = function(aaa){
+           painting = false
+            
+        }
+
+        
+
+
+        
+        
+
+    </script>
+</body>
+</html>
