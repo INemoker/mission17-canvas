@@ -1,6 +1,7 @@
 var yyy = document.getElementById('xxx')
 var context = yyy.getContext('2d')
 canvasSize(yyy)
+var lineWidth = 3
 
 
 
@@ -14,42 +15,91 @@ window.onresize = function() {
     canvasSize()
 }
 
+context.fillStyle = "white";
+context.fillRect(0,0,yyy.width,yyy.height);
 
-
-function drawCircle(x,y,radius){
-context.beginPath()
-context.arc(x,y,radius,0,Math.PI*2)
-context.fill()
-}
+// function drawCircle(x,y,radius){
+// context.beginPath()
+// context.arc(x,y,radius,0,Math.PI*2)
+// context.fill()
+// }
 
 function drawLine(x1,y1,x2,y2) {
     context.beginPath()
     context.moveTo(x1,y1)//起点
-    context.lineWidth = 3
+    context.lineWidth = lineWidth
     context.lineTo(x2,y2)//终点
-    context.strokeStyle = 'black'
     context.stroke()
-    context.closePath()   
+    context.closePath()  
 }
 
 
 var usingEraser = false
 eraser.onclick = function() {
     usingEraser = true
-    actions.className = "actions x"
+    eraser.classList.add('active')
+    brush.classList.remove('active')
 }
 //橡皮擦
 brush.onclick = function() {
     usingEraser = false
-    actions.className = "actions"
+    brush.classList.add('active')
+    eraser.classList.remove('active')
+}
+clear.onclick = function(){
+    context.clearRect(0,0,yyy.width,yyy.height);
+    context.fillRect(0,0,yyy.width,yyy.height);
+}
+download.onclick = function(){
+    var url = yyy.toDataURL("image/png")
+    var a = document.createElement('a')
+    document.body.appendChild(a)
+    a.href = url
+    a.download = "picture"
+    a.target = "_blank"
+    a.click()
 }
 
 var lastPoint ={x:undefined,y:undefined}
 var painting = false
 
+black.onclick = function(){
+    context.strokeStyle = 'black'
+    red.classList.remove('active')
+    green.classList.remove('active')
+    blue.classList.remove('active')
+    black.classList.add('active')
+}
+red.onclick = function(){
+    context.strokeStyle = 'red'
+    red.classList.add('active')
+    green.classList.remove('active')
+    blue.classList.remove('active')
+    black.classList.remove('active')
+}
+green.onclick = function(){
+    context.strokeStyle = 'green'
+    red.classList.remove('active')
+    green.classList.add('active')
+    blue.classList.remove('active')
+    black.classList.remove('active')
+}
+blue.onclick = function(){
+    context.strokeStyle = 'blue'
+    red.classList.remove('active')
+    green.classList.remove('active')
+    blue.classList.add('active')
+}
 
+thin.onclick = function(){
+    lineWidth = 3
+}
+thick.onclick = function(){
+    lineWidth = 6
+}
 
 //特性检测
+paintingBegin:
 if(document.body.ontouchstart !== undefined){
     xxx.ontouchstart = function(aaa){
         console.log('开始摸我了')
